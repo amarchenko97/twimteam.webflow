@@ -150,6 +150,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     el.style.backgroundImage = `url("${imageUrl}")`;
   }
 
+  function setText(el, value) {
+    if (!el) return;
+    el.textContent = value || '';
+    if (value) el.classList.remove('w-dyn-bind-empty');
+  }
+
   try {
     const postMarkdown = await fetchMarkdownFromFolder(blogFolder, slug);
     const post = parseFrontMatter(postMarkdown);
@@ -166,11 +172,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     document.title = post.data.title || document.title;
 
-    if (titleEl) titleEl.textContent = post.data.title || '';
-    if (topMetaEls[0]) topMetaEls[0].textContent = author.name || post.data.written_by || '';
-    if (topMetaEls[1]) topMetaEls[1].textContent = formatDate(post.data.date);
-    if (writtenByEl) writtenByEl.textContent = author.name || post.data.written_by || '';
-    if (authorPositionEl) authorPositionEl.textContent = author.position || '';
+    setText(titleEl, post.data.title);
+    setText(topMetaEls[0], author.name || post.data.written_by);
+    setText(topMetaEls[1], formatDate(post.data.date));
+    setText(writtenByEl, author.name || post.data.written_by);
+    setText(authorPositionEl, author.position);
 
     setBackground(mainImageEl, post.data.cover);
     setBackground(avatarTopEl, author.photo);
@@ -185,6 +191,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 });
 </script>
+
 
 </body>
 </html>
