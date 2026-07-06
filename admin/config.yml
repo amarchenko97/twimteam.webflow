@@ -20,11 +20,9 @@ collections:
         name: "layout"
         widget: "hidden"
         default: "detail_blog"
-
       - label: "Заголовок"
         name: "title"
         widget: "string"
-
       - label: "Автор"
         name: "author"
         widget: "relation"
@@ -32,25 +30,24 @@ collections:
         search_fields: ["name", "position"]
         value_field: "{{slug}}"
         display_fields: ["name", "position"]
-
-      - label: "Written by"
-        name: "written_by"
-        widget: "string"
-        required: false
-        hint: "Например: Written by Anna Smith"
-
-      - label: "Дата публикации"
+      - label: "Дата"
         name: "date"
         widget: "datetime"
         date_format: "YYYY-MM-DD"
         time_format: false
         format: "YYYY-MM-DD"
-
       - label: "Обложка"
         name: "cover"
         widget: "image"
-
-      - label: "Текст"
+      - label: "Краткое описание"
+        name: "summary"
+        widget: "text"
+        required: false
+      - label: "Written by"
+        name: "written_by"
+        widget: "string"
+        required: false
+      - label: "Текст статьи"
         name: "body"
         widget: "markdown"
 

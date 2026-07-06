@@ -1,0 +1,1 @@
+/blog/:slug /detail_blog.html?slug=:slug 200
