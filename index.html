@@ -347,15 +347,123 @@ Webflow.push(function() {
     });
 });
 </script>
-  <script>
-$(document).ready(function() {
-  $('.team_card').last().append($('.blue').clone());
-})
-</script>
+
   <script>
 $(document).ready(function() {
   $('.team_cardcopy').last().append($('.bluecopy ').clone());
 })
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+  const githubOwner = 'amarchenko97';
+  const githubRepo = 'twimteam.webflow';
+  const branch = 'main';
+  const teamFolder = 'content/team';
+
+  const listEl = document.querySelector('#our_team .w-dyn-items');
+  const emptyEl = document.querySelector('#our_team .w-dyn-empty');
+
+  if (!listEl) return;
+
+  listEl.innerHTML = '';
+
+  function parseFrontMatter(markdown) {
+    const match = markdown.match(/^---\s*([\s\S]*?)\s*---/);
+    if (!match) return {};
+
+    const data = {};
+    const yaml = match[1];
+
+    yaml.split('\n').forEach(function (line) {
+      const separatorIndex = line.indexOf(':');
+      if (separatorIndex === -1) return;
+
+      const key = line.slice(0, separatorIndex).trim();
+      let value = line.slice(separatorIndex + 1).trim();
+
+      value = value.replace(/^['"]|['"]$/g, '');
+      data[key] = value;
+    });
+
+    return data;
+  }
+
+  function createTeamCard(member) {
+    const item = document.createElement('div');
+    item.setAttribute('role', 'listitem');
+    item.className = 'w-dyn-item w-col w-col-3';
+
+    const card = document.createElement('div');
+    card.className = 'team_card';
+
+    const image = document.createElement('img');
+    image.src = member.photo || 'images/Vector2.png';
+    image.loading = 'lazy';
+    image.alt = member.name ? member.name + ' photo' : '';
+    image.className = 'image-9';
+
+    const name = document.createElement('h4');
+    name.className = 'heading-4';
+    name.textContent = member.name || '';
+
+    const position = document.createElement('div');
+    position.className = 'text-block';
+    position.textContent = member.position || '';
+
+    card.appendChild(image);
+    card.appendChild(name);
+    card.appendChild(position);
+    item.appendChild(card);
+
+    return item;
+  }
+
+  try {
+    const apiUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${teamFolder}?ref=${branch}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error('Cannot load team files from GitHub');
+    }
+
+    const files = await response.json();
+    const markdownFiles = files.filter(function (file) {
+      return file.type === 'file' && file.name.endsWith('.md');
+    });
+
+    const members = await Promise.all(
+      markdownFiles.map(async function (file) {
+        const fileResponse = await fetch(file.download_url);
+        const markdown = await fileResponse.text();
+        return parseFrontMatter(markdown);
+      })
+    );
+
+    const visibleMembers = members.filter(function (member) {
+      return member.name || member.position || member.photo;
+    });
+
+    if (!visibleMembers.length) {
+      if (emptyEl) emptyEl.style.display = 'block';
+      return;
+    }
+
+    if (emptyEl) emptyEl.style.display = 'none';
+
+    visibleMembers.forEach(function (member) {
+      listEl.appendChild(createTeamCard(member));
+    });
+
+    if (window.jQuery && document.querySelector('.blue')) {
+      window.jQuery('.team_card').last().append(window.jQuery('.blue').clone());
+    }
+  } catch (error) {
+    console.error(error);
+    if (emptyEl) emptyEl.style.display = 'block';
+  }
+});
+</script>
+
 </body>
 </html>
