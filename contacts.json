@@ -1,0 +1,31 @@
+{
+  "company": {
+    "name": "TwimTeam",
+    "website": "https://twimteam1.netlify.app/",
+    "description": "TwimTeam helps businesses improve software quality through QA services, manual testing, test automation, test documentation, requirements analysis, and QA consulting.",
+    "services": [
+      "Manual QA testing",
+      "Functional testing",
+      "Regression testing",
+      "Smoke testing",
+      "Exploratory testing",
+      "UI and usability testing",
+      "Compatibility and cross-browser testing",
+      "Test automation",
+      "QA consulting",
+      "Test documentation creation and management",
+      "Requirements analysis and risk assessment"
+    ],
+    "contacts": {
+      "email": "kmatskevich@twimteam.com",
+      "telegram": "@kmatskevich",
+      "telegram_url": "https://t.me/kmatskevich",
+      "linkedin": "https://www.linkedin.com/company/twimteam-llc"
+    },
+    "important_pages": {
+      "homepage": "https://twimteam1.netlify.app/",
+      "blog": "https://twimteam1.netlify.app/blog",
+      "contact_section": "https://twimteam1.netlify.app/#form"
+    }
+  }
+}
